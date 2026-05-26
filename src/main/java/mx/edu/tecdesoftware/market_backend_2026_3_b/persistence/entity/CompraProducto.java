@@ -12,7 +12,5 @@ public class CompraProducto {
     private Integer cantidad;
     private Double total;
     private Boolean estado;
-
-
 }
 
