@@ -5,17 +5,22 @@ import mx.edu.tecdesoftware.market_backend_2026_3_b.persistence.entity.CompraPro
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface PurchaseItemMapper {
 
     @Mapping(source = "id.idProducto", target = "productId")
     @Mapping(source = "cantidad", target = "quantity")
+    @Mapping(source = "total", target = "total")
     @Mapping(source = "estado", target = "active")
     PurchaseItem toPurchaseItem(CompraProducto producto);
 
     @InheritInverseConfiguration
-    @Mapping(target = "compra", ignore = true)
-    @Mapping(target = "producto", ignore = true)
+    @Mappings({
+            @Mapping(target = "compra", ignore = true),
+            @Mapping(target = "producto", ignore = true),
+            @Mapping(target = "id.idCompra", ignore = true)
+    })
     CompraProducto toCompraProducto(PurchaseItem item);
 }

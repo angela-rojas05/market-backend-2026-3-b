@@ -19,40 +19,42 @@ public class ProductoRepository implements ProductRepository {
     private ProductoCrudRepository productoCrudRepository;
 
     @Autowired
-    private ProductMapper productMapper;
+    private ProductMapper mapper;
 
     // SELECT * FROM productos
     public List<Product> getAll(){
         // Se castea Iterable a lista
-       List<Producto> productos = (List<Producto>) productoCrudRepository.findAll();
-       return productMapper.toProducts(productos);
+        return mapper.toProducts((List<Producto>) productoCrudRepository.findAll());
     }
 
     // Obtener productos por categoria
 
-    public Optional<List<Product>> getByCategory(int categoryId){
-        List<Producto> productos
-                = productoCrudRepository.findByCantidadOrderByNombreAsc(categoryId);
-        return Optional.of(productMapper.toProducts(productos));
+    @Override
+    public Optional<List<Product>> getByCategory(int categoryId) {
+        List<Producto> productos =
+                productoCrudRepository.findByIdCategoriaOrderByNombreAsc(
+                        Integer.valueOf(categoryId)
+                );
+
+        return Optional.of(mapper.toProducts(productos));
     }
 
     // Obtener productos escasos
     public Optional<List<Product>> getScarceProducts(int quantity){
-        Optional<List<Producto>> productos =
-                productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true);
-        return Optional.of(productMapper.toProducts(productos.get()));
+        return productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true)
+                .map(productos -> mapper.toProducts(productos));
     }
 
     // Obtener un producto dado el ID
     public Optional<Product> getProduct(int productId){
         return productoCrudRepository.findById(productId)
-                .map(producto -> productMapper.toProduct(producto));
+                .map(producto -> mapper.toProduct(producto));
     }
 
     //Guardar un producto
     public Product save(Product product){
-        Producto producto = productMapper.toProducto(product);
-        return productMapper.toProduct(productoCrudRepository.save(producto));
+        Producto producto = mapper.toProducto(product);
+        return mapper.toProduct(productoCrudRepository.save(producto));
     }
     // Eliminar un producto por ID
     public void delete(int productId){

@@ -4,6 +4,7 @@ import mx.edu.tecdesoftware.market_backend_2026_3_b.domain.Product;
 import mx.edu.tecdesoftware.market_backend_2026_3_b.domain.repository.ProductRepository;
 import mx.edu.tecdesoftware.market_backend_2026_3_b.domain.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @GetMapping("")
     public ResponseEntity<List<Product>> gellAll(){
@@ -32,23 +30,24 @@ public class ProductController {
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable("categoryId") int categoryId){
+    public ResponseEntity<List<Product>> getByCategory(@PathVariable("categoryId") int categoryId) {
         return productService.getByCategory(categoryId)
+                .filter(products -> !products.isEmpty())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
     @PostMapping("")
     public ResponseEntity<Product> save(@RequestBody Product product){
-        return ResponseEntity.ok(productService.save(product));
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") int productId){
-        return ResponseEntity.ok(productService.delete(productId));
-
+    public ResponseEntity<Boolean> delete(@PathVariable("id") int productId){
+        if (productService.delete(productId)) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 
