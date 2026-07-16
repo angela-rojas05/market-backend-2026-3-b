@@ -17,10 +17,10 @@ public interface ProductoCrudRepository extends CrudRepository<Producto, Integer
         ORDER BY nombre ASC/DESC
      */
 
-    List<Producto> findByCantidadOrderByNombreAsc(int idCantidad);
+    List<Producto> findByIdCategoriaOrderByNombreAsc(Integer idCategoria);
 
-    //Obtener los productos
-    Optional<List<Producto>> findByCantidadStockLessThanAndEstado(int cantidad, boolean estado);
+    Optional<List<Producto>>
+    findByCantidadStockLessThanAndEstado(Integer cantidadStock, Boolean estado);
 
 
 }
