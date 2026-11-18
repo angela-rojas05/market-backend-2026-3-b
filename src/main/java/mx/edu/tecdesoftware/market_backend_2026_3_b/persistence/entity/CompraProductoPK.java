@@ -6,6 +6,7 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+// prueba
 @Embeddable
 public class CompraProductoPK implements Serializable {
 
