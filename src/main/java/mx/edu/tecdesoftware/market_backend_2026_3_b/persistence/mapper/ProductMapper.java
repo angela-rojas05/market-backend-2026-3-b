@@ -19,6 +19,7 @@ public interface ProductMapper {
             @Mapping(source = "precioVenta", target = "price"),
             @Mapping(source = "cantidadStock", target = "stock"),
             @Mapping(source = "estado", target = "active"),
+            @Mapping(source = "imageUrl", target = "imageUrl"),
             @Mapping(source = "categoria", target = "category")
     })
     Product toProduct(Producto producto);

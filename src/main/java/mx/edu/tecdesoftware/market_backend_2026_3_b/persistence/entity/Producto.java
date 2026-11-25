@@ -29,6 +29,9 @@ public class Producto {
 
     private Boolean estado;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     // Relacion con categoria
     // Muchos productos pueden pertenecer a una categoria
     @ManyToOne
@@ -91,6 +94,14 @@ public class Producto {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Categoria getCategoria() {

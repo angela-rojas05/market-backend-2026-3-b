@@ -8,6 +8,7 @@ public class Product {
     private double price;
     private int stock;
     private boolean active;
+    private String imageUrl;
     private Category category;
 
     public Integer getProductId() {
@@ -56,6 +57,14 @@ public class Product {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Category getCategory() {
