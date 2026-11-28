@@ -103,6 +103,22 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Update an existing product", description = "Updates a product by its ID if it exists")
+    @ApiResponse(responseCode = "200", description = "Product updated successfully")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    @ApiResponse(responseCode = "500", description = "Internal server error")
+    public ResponseEntity<Product> update(
+            @PathVariable("id") int productId,
+            @RequestBody Product product) {
+        return productService.getProduct(productId)
+                .map(existing -> {
+                    product.setProductId(productId);
+                    return ResponseEntity.ok(productService.save(product));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product by ID", description = "Deletes a product if it exists")
     @ApiResponse(responseCode = "200", description = "Product deleted successfully")
